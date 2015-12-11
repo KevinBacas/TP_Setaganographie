@@ -102,4 +102,9 @@ void stegano_embed_file(char* file_out, const char* message, const char* file_in
 /**************************************************************************/
 void stegano_extract_file(char* file_out, const char* file_in, const hcode* C);
 
+uint* stegano_gen_permut(uint size);
+void stegano_permut_free(uint** v);
+void stegano_permut_vector(vector *vec, uint* permut_tab);
+void stegano_inv_permut_vector(vector *vec, uint* permut_tab);
+
 #endif /*  __STEGANO_H__ */

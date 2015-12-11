@@ -75,3 +75,54 @@ void PGM_diff(const pgm* p1, const pgm* p2, pgm** p_out)
 ```
 
 On obtient donc une image avec les pixels modifiés. On observe que les pixels modifiés se  trouvent en haut de l'image à chaque fois. Ce n'est pas très interessant car facilement attaquable. Via une permutation nous alons essayés  de rendre cela plus aléatoire.
+
+
+## Question 4
+```c
+uint* stegano_gen_permut(uint size) {
+  uint i;
+  uint* res;
+  srand(time(NULL));
+  res = malloc(sizeof(uint) * size);
+  for (i = 0; i < size; ++i)
+  {
+    res[i] = i;
+  }
+
+  for(i = 0; i < size; ++i) {
+    uint s = rand() & size;
+    uint tmp = res[i];
+    res[i] = res[s];
+    res[s] = tmp;
+  }
+  return res;
+}
+
+void stegano_permut_free(uint** v) {
+  free(*v);
+}
+
+void stegano_permut_vector(vector *vec, uint* permut_tab) {
+  int i;
+  uint tmp;
+  for (i = 0; i < (int)vec->size; ++i)
+  {
+    tmp = vec->v[i];
+    vec->v[i] = vec->v[permut_tab[i]];
+    vec->v[permut_tab[i]] = tmp;
+  }
+}
+
+void stegano_inv_permut_vector(vector *vec, uint* permut_tab) {
+  int i;
+  uint tmp;
+  for (i = (vec->size-1); i > -1; --i)
+  {
+    tmp = vec->v[i];
+    vec->v[i] = vec->v[permut_tab[i]];
+    vec->v[permut_tab[i]] = tmp;
+  }
+}
+```
+
+La permutation ne s'opère que sur les lignes mais pas sur les colones, de ce fait la sortie est différente mais les points se trouvent toujours en haut. Mon problème vient de la compréhension de la fonction `stegano_embed_file`. Il faudrait que je regarde plus de temps le code afin d'insérer la permutation au bon endroit.
