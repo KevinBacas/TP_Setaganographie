@@ -10,7 +10,6 @@
 #include "stegano.h"
 
 
-
 int main(void)
 {
   
@@ -36,25 +35,25 @@ int main(void)
     diff_file;
  
   printf("Creating the Hamming code: ");
-  /* TODO */
+  HCode_create(&C, 8);
 
   printf("OK\n");
 
 
   printf("Embed '%s' into '%s' which produces '%s': ", txt_ori, img_ori, img_stegano);
-  /* TODO */
+  stegano_embed_file(img_stegano, txt_ori, img_ori, C);
 
   printf("OK\n");
 
 
   printf("Extract '%s' into '%s': ", img_stegano, txt_ext);
-  /* TODO */
+  stegano_extract_file(txt_ext, img_stegano, C);
 
   printf("OK\n");
 
 
   printf("Free the memory: ");
-  /* TODO */
+  HCode_free(&C);
 
   printf("OK\n");
 
