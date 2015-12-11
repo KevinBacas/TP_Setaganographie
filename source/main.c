@@ -23,7 +23,8 @@ int main(void)
 
   pgm
     *ori,
-    *stego;
+    *stego,
+    *diff;
 
   uint
     i, 
@@ -52,8 +53,21 @@ int main(void)
   printf("OK\n");
 
 
+  printf("Making the difference between %s and %s: ", img_ori, img_stegano);
+  PGM_create(&ori, img_ori);
+  PGM_create(&stego, img_stegano);
+  file_open(&diff_file, img_diff, "w");
+  PGM_diff(ori, stego, &diff);
+  PGM_fprint(diff_file, diff);
+
+  printf("OK\n");
+
   printf("Free the memory: ");
   HCode_free(&C);
+  PGM_destroy(&ori);
+  PGM_destroy(&stego);
+  PGM_destroy(&diff);
+  file_close(&diff_file);
 
   printf("OK\n");
 

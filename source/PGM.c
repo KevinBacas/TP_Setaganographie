@@ -87,3 +87,37 @@ void PGM_get_height(uint *r, const pgm* img)
 {
   *r = img->img->nb_row;
 }
+
+void PGM_diff(const pgm* p1, const pgm* p2, pgm** p_out)
+{
+  uint
+    w_p1,
+    h_p1,
+    w_p2,
+    h_p2,
+    i,
+    j;
+
+  if((*p_out = malloc(sizeof(pgm))) == NULL)
+  {
+    error_print(__FILE__, __LINE__, __FUNCTION__,
+    "Allocation for image data impossible.", ERR_ALLOC);
+  }
+  (*p_out)->grayscale = p1->grayscale;
+
+  PGM_get_width(&w_p1, p1);
+  PGM_get_height(&h_p1, p1);
+  PGM_get_width(&w_p2, p2);
+  PGM_get_height(&h_p2, p2);
+  if(w_p1 == w_p2 && h_p1 == h_p2) {
+    matrix_malloc(&((*p_out)->img), h_p1, w_p1);
+
+    for (i = 0; i < w_p1; ++i) {
+      for (j = 0; j < h_p1; ++j) {
+        if((p2->img->data[i][j] - p1->img->data[i][j]) != 0) {
+          (*p_out)->img->data[i][j] = (*p_out)->grayscale;
+        }
+      }
+    }
+  }
+}
